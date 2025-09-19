@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+            - StripPrefix=1
+        - id: jwks-endpoint
+          uri: lb://auth-service
+          predicates:
+            - Path=/.well-known/jwks.json
+          filters:
+            - StripPrefix=0
+
+jwt:
+  public-key-endpoint: http://auth-service:8081/.well-known/jwks.json
+  issuer: auth-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, gateway
+  endpoint:
+    health:
+      show-details: always
