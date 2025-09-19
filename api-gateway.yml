@@ -16,10 +16,6 @@ spring:
           predicates:
             - Path=/auth/**
           filters:
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
             - StripPrefix=1
         - id: jwks-endpoint
           uri: lb://auth-service
