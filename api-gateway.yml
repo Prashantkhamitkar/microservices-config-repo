@@ -17,6 +17,12 @@ spring:
             - Path=/auth/**
           filters:
             - StripPrefix=0
+        - id: testing-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/testing/**
+          filters:
+            - StripPrefix=0    
         - id: jwks-endpoint
           uri: lb://auth-service
           predicates:
