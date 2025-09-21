@@ -29,6 +29,12 @@ spring:
             - Path=/.well-known/jwks.json
           filters:
             - RewritePath=/.well-known/jwks.json, /auth/.well-known/jwks.json
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/products/**
+          filters:
+            - StripPrefix=1  
 
 # Remove this - it's not needed for gateway configuration
 # jwt:
