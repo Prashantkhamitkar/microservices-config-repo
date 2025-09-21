@@ -22,11 +22,12 @@ spring:
           predicates:
             - Path=/.well-known/jwks.json
           filters:
-            - StripPrefix=0
+            - RewritePath=/.well-known/jwks.json, /auth/.well-known/jwks.json
 
-jwt:
-  public-key-endpoint: http://auth-service:8081/.well-known/jwks.json
-  issuer: auth-service
+# Remove this - it's not needed for gateway configuration
+# jwt:
+#   public-key-endpoint: http://auth-service:8081/auth/.well-known/jwks.json
+#   issuer: auth-service
 
 management:
   endpoints:
@@ -36,3 +37,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
