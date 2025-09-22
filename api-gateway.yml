@@ -34,9 +34,17 @@ spring:
           predicates:
             - Path=/api/products/**
           filters:
-            - StripPrefix=1  
+            - StripPrefix=1
+  
+  # ✅ CORRECT: Spring Security OAuth2 JWT Configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/auth/.well-known/jwks.json  # Use localhost for now
+          issuer-uri: http://localhost:8081
 
-# Remove this - it's not needed for gateway configuration
+# ❌ REMOVE THIS: Custom JWT config not needed
 # jwt:
 #   public-key-endpoint: http://auth-service:8081/auth/.well-known/jwks.json
 #   issuer: auth-service
@@ -54,3 +62,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web.reactive: DEBUG
