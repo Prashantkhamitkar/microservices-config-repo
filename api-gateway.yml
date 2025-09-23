@@ -4,50 +4,47 @@ server:
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+
       routes:
+        # Auth Service (login, register, jwks)
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=0
-        - id: testing-service
-          uri: lb://auth-service
-          predicates:
-            - Path=/testing/**
-          filters:
-            - StripPrefix=0    
+
+        # JWKS proxy route
         - id: jwks-endpoint
           uri: lb://auth-service
           predicates:
             - Path=/.well-known/jwks.json
           filters:
             - RewritePath=/.well-known/jwks.json, /auth/.well-known/jwks.json
+
+        # Product Service (protected)
         - id: product-service
           uri: lb://product-service
           predicates:
             - Path=/api/products/**
           filters:
             - StripPrefix=1
-  
-  # ✅ CORRECT: Spring Security OAuth2 JWT Configuration
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:8081/auth/.well-known/jwks.json  # Use localhost for now
-          issuer-uri: http://localhost:8081
 
-# ❌ REMOVE THIS: Custom JWT config not needed
-# jwt:
-#   public-key-endpoint: http://auth-service:8081/auth/.well-known/jwks.json
-#   issuer: auth-service
+gateway:
+  auth:
+    jwks-uri: http://auth-service:8081/.well-known/jwks.json
+    service-token-ttl-ms: 60000
+    public-paths:
+      - /auth/login
+      - /auth/register
+      - /api/products/public
 
 management:
   endpoints:
