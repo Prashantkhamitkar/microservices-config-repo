@@ -41,10 +41,7 @@ gateway:
   auth:
     jwks-uri: http://auth-service:8081/.well-known/jwks.json
     service-token-ttl-ms: 60000
-    public-paths:
-      - /auth/login
-      - /auth/register
-      - /api/products/public
+    public-paths: /auth/login,/auth/register,/api/products/public
 
 management:
   endpoints:
