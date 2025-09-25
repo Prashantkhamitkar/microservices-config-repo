@@ -17,10 +17,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2-console
-security:
-  jwt:
-    public-key-path: classpath:public_api_key.pem      
+      path: /h2-console     
 management:
   endpoints:
     web:
