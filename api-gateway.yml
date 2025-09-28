@@ -39,7 +39,7 @@ spring:
 
 gateway:
   auth:
-    jwks-uri: http://localhost:8081/.well-known/jwks.json
+    jwks-uri: http://localhost:8081/auth/.well-known/jwks.json
     service-token-ttl-ms: 60000
     public-paths: /auth/login,/auth/register,/api/products/public
 
