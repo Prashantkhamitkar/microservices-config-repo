@@ -30,7 +30,7 @@ management:
     health:
       show-details: always
 gateway:
-  jwks-uri: http://localhost:8080/.well-known/jwks.json
+  jwks-uri: http://eureka-server:8080/.well-known/jwks.json
 logging:
   level:
     org.springframework.security: DEBUG
