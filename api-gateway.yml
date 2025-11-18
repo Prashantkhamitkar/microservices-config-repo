@@ -39,7 +39,7 @@ spring:
 
 gateway:
   auth:
-    jwks-uri: http://auth-service:8081/auth/.well-known/jwks.json
+    jwks-uri: http://localhost:8081/auth/.well-known/jwks.json
     service-token-ttl-ms: 60000
     public-paths: /auth/login,/auth/register,/api/products/public
 
@@ -55,7 +55,7 @@ management:
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka-server:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 logging:
   level:
